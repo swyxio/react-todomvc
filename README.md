@@ -2,6 +2,8 @@
 
 TodoMVC with a clean React implementation (no Redux). Use this as an easy demo to show off your backend integrations. (e.g. React + Firebase, React + AWS Amplify, React + Node/Express/Mongo, etc.)
 
+**Live Demo: [react-todomvc.netlify.app](https://react-todomvc.netlify.app)**
+
 ## Installation
 
 ```bash
