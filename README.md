@@ -25,7 +25,7 @@ For demo purposes, a sample implementation is provided from `useTodosLocalState`
 
 ```js
 import { Todos, useTodosLocalState } from 'react-todomvc';
-import '../dist/todomvc.css'; // for styling
+import 'react-todomvc/dist/todomvc.css'; // for styling
 
 const App = () => {
   const props = useTodosLocalState() // TODO: replace this
