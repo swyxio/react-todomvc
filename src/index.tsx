@@ -16,10 +16,27 @@ export type TodosProps = {
   children: React.ReactNode;
 };
 
-let id = 0;
+let id = 3;
+const defaultTodos: TodoType[] = [
+  {
+    id: "0",
+    completed: true,
+    value: "Learn React"
+  },
+  {
+    id: "1",
+    completed: false,
+    value: "Learn AWS"
+  },
+  {
+    id: "2",
+    completed: false,
+    value: "Profit"
+  },
+]
 export function useTodosLocalState() {
   // native hooks
-  const [todos, setTodos] = React.useState<TodoType[]>([]);
+  const [todos, setTodos] = React.useState<TodoType[]>(defaultTodos);
   // external API + implementation
   return {
     todos,

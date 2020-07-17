@@ -4,6 +4,9 @@ TodoMVC with a clean React implementation (no Redux). Use this as an easy demo t
 
 **Live Demo: [react-todomvc.netlify.app](https://react-todomvc.netlify.app)**
 
+![image](https://user-images.githubusercontent.com/6764957/87823641-59816500-c8a6-11ea-920e-5140041977b0.png)
+
+
 ## Installation
 
 ```bash
