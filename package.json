@@ -52,5 +52,19 @@
     "semi": true,
     "singleQuote": true,
     "trailingComma": "es5"
-  }
+  },
+  "description": "TodoMVC with a clean React implementation (no Redux). Use this as an easy demo to show off your backend integrations. (e.g. React + Firebase, React + AWS Amplify, React + Node/Express/Mongo, etc.)",
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sw-yx/react-todomvc.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/sw-yx/react-todomvc/issues"
+  },
+  "homepage": "https://github.com/sw-yx/react-todomvc#readme"
 }
