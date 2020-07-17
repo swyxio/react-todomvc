@@ -12,10 +12,12 @@ export type TodosProps = {
   commitNewTodo: (value: string) => Promise<void>;
   toggleTodo: (id: string) => Promise<void>;
   clearCompletedTodos?: () => void;
+  todosTitle?: string;
+  children: React.ReactNode;
 };
 
 let id = 0;
-export function useTodosLocalState(): TodosProps {
+export function useTodosLocalState() {
   // native hooks
   const [todos, setTodos] = React.useState<TodoType[]>([]);
   // external API + implementation
@@ -43,6 +45,8 @@ export function Todos({
   commitNewTodo,
   toggleTodo,
   clearCompletedTodos,
+  todosTitle = 'React-TodoMVC',
+  children,
 }: TodosProps) {
   const [filter, setFilter] = React.useState('all');
   const todosMap = {
@@ -61,7 +65,8 @@ export function Todos({
   return (
     <section className="todoapp">
       <header className="header">
-        <h1>todos</h1>
+        <h1>{todosTitle}</h1>
+        {children}
         <input
           className="new-todo"
           placeholder="What needs to be done?"

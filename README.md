@@ -12,12 +12,13 @@ npm i react-todomvc
 
 ## Usage
 
-The core of this package is a `<Todos>` component that takes 4 props:
+The core of this package is a `<Todos>` component that takes 5 props:
 
 - `todos:  TodoType[]`: an array of `TodoType` objects 
 - `commitNewTodo: (value: string) => Promise<void>`: callback for adding a new todo
 - `toggleTodo: (id: string) => Promise<void>`: callback for toggling the completion state of a todo of `id`
 - `clearCompletedTodos?: () => void`: callback for clearing completed todos (optional - if omitted, the corresponding button won't show)
+- `todosTitle?: string`: optional string - to customize the title shown. defaults to `"React-TodoMVC"`.
 
 
 For demo purposes, a sample implementation is provided from `useTodosLocalState`. The intent is that you will swap out these functions for your own as you implement your backend.
