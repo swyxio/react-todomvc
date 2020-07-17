@@ -19,24 +19,53 @@ export type TodosProps = {
 let id = 3;
 const defaultTodos: TodoType[] = [
   {
-    id: "0",
+    id: '0',
     completed: true,
-    value: "Learn React"
+    value: 'Learn React',
   },
   {
-    id: "1",
+    id: '1',
     completed: false,
-    value: "Learn AWS"
+    value: 'Learn AWS',
   },
   {
-    id: "2",
+    id: '2',
     completed: false,
-    value: "Profit"
+    value: 'Profit',
   },
-]
+];
 export function useTodosLocalState() {
   // native hooks
   const [todos, setTodos] = React.useState<TodoType[]>(defaultTodos);
+  // external API + implementation
+  return {
+    todos,
+    async commitNewTodo(value: string) {
+      setTodos([...todos, { value, id: '' + id++, completed: false }]);
+    },
+    async toggleTodo(id: string) {
+      setTodos(
+        todos.map(todo =>
+          todo.id !== id ? todo : { ...todo, completed: !todo.completed }
+        )
+      );
+    },
+    clearCompletedTodos: () => {
+      window.confirm('Sure you want to clear completed todos?') &&
+        setTodos(todos.filter(t => !t.completed));
+    },
+  };
+}
+
+export function useTodosLocalStorageState() {
+  let _pastState = localStorage.getItem('TODO');
+  let pastState = _pastState
+    ? JSON.parse(_pastState) || defaultTodos
+    : defaultTodos;
+  const [todos, setTodos] = React.useState<TodoType[]>(pastState);
+  React.useEffect(() => {
+    localStorage.setItem('TODO', JSON.stringify(todos));
+  });
   // external API + implementation
   return {
     todos,
