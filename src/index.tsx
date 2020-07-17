@@ -16,7 +16,16 @@ export type TodosProps = {
   children: React.ReactNode;
 };
 
-let id = 3;
+// https://www.w3resource.com/javascript-exercises/javascript-math-exercise-23.php
+function uuid(){
+  var dt = new Date().getTime();
+  var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = (dt + Math.random()*16)%16 | 0;
+      dt = Math.floor(dt/16);
+      return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+  });
+  return uuid;
+}
 const defaultTodos: TodoType[] = [
   {
     id: '0',
@@ -41,7 +50,7 @@ export function useTodosLocalState() {
   return {
     todos,
     async commitNewTodo(value: string) {
-      setTodos([...todos, { value, id: '' + id++, completed: false }]);
+      setTodos([...todos, { value, id: uuid(), completed: false }]);
     },
     async toggleTodo(id: string) {
       setTodos(
@@ -70,7 +79,7 @@ export function useTodosLocalStorageState() {
   return {
     todos,
     async commitNewTodo(value: string) {
-      setTodos([...todos, { value, id: '' + id++, completed: false }]);
+      setTodos([...todos, { value, id: uuid(), completed: false }]);
     },
     async toggleTodo(id: string) {
       setTodos(
