@@ -1,6 +1,6 @@
 # react-todomvc
 
-TodoMVC with a clean React implementation (no Redux). Use this as an easy demo to show off your backend integrations. (e.g. React + Firebase, React + AWS Amplify, React + Node/Express/Mongo, etc.)
+TodoMVC with a clean React implementation (no Redux). Done in TypeScript because [I like React + TypeScript](https://react-typescript-cheatsheet.netlify.app/). Use this as an easy demo to show off your backend integrations. (e.g. React + Firebase, React + AWS Amplify, React + Node/Express/Mongo, etc.)
 
 **Live Demo: [react-todomvc.netlify.app](https://react-todomvc.netlify.app)**
 
@@ -32,7 +32,7 @@ import { Todos, useTodosLocalState } from 'react-todomvc';
 import 'react-todomvc/dist/todomvc.css'; // for styling
 
 const App = () => {
-  const props = useTodosLocalState() // TODO: replace this
+  const props = useTodosLocalState() // FOR DEMO CREATOR: replace this with your impl!
   return (
     <div>
       <Todos {...props} />
