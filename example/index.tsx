@@ -1,12 +1,14 @@
 import 'react-app-polyfill/ie11';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Thing } from '../.';
+import { Todos, useTodosLocalState } from '../.';
+import '../dist/todomvc.css';
 
 const App = () => {
+  const props = useTodosLocalState()
   return (
     <div>
-      <Thing />
+      <Todos {...props} />
     </div>
   );
 };

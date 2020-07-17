@@ -1,51 +1,62 @@
-import React from "react";
-import cn from "classnames";
-import "./todomvc.css";
-// import { Todo } from "./Todo";
+import React from 'react';
+import cn from 'classnames';
 
-type TodoType = {
+export type TodoType = {
   value: string;
   completed?: boolean;
   id: string;
 };
 
-let id = 0;
+export type TodosProps = {
+  todos: TodoType[];
+  commitNewTodo: (value: string) => Promise<void>;
+  toggleTodo: (id: string) => Promise<void>;
+  clearCompletedTodos?: () => void;
+};
 
-export function Todos() {
-  const [hash, setHash] = React.useState("all");
+let id = 0;
+export function useTodosLocalState(): TodosProps {
+  // native hooks
   const [todos, setTodos] = React.useState<TodoType[]>([]);
+  // external API + implementation
+  return {
+    todos,
+    async commitNewTodo(value: string) {
+      setTodos([...todos, { value, id: '' + id++, completed: false }]);
+    },
+    async toggleTodo(id: string) {
+      setTodos(
+        todos.map(todo =>
+          todo.id !== id ? todo : { ...todo, completed: !todo.completed }
+        )
+      );
+    },
+    clearCompletedTodos: () => {
+      window.confirm('Sure you want to clear completed todos?') &&
+        setTodos(todos.filter(t => !t.completed));
+    },
+  };
+}
+
+export function Todos({
+  todos,
+  commitNewTodo,
+  toggleTodo,
+  clearCompletedTodos,
+}: TodosProps) {
+  const [filter, setFilter] = React.useState('all');
   const todosMap = {
-    active: todos.filter((t) => !t.completed),
-    completed: todos.filter((t) => t.completed),
+    active: todos.filter(t => !t.completed),
+    completed: todos.filter(t => t.completed),
   } as Record<string, TodoType[]>;
 
   // newtodo
-  const commitNewTodo = (value: string) => {
-    setTodos([...todos, { value, id: "" + id++, completed: false }]);
-    setNewTodo("");
-  };
-  const [newTodo, setNewTodo] = React.useState("");
-  const onNewTodo_change = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setNewTodo(e.target.value);
+  const [newTodo, setNewTodo] = React.useState('');
   const onNewTodo_enter = (e: React.KeyboardEvent<HTMLInputElement>) =>
-    e.key === "Enter" && newTodo.length > 0 && commitNewTodo(newTodo);
-
-  const toggleTodo = (id: string) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id !== id ? todo : { ...todo, completed: !todo.completed }
-      )
-    );
-  };
-  const clearCompleted = () =>
-    window.confirm("sure you want to clear completed?") &&
-    setTodos(todosMap.active) &&
-    setHash("all");
-
-  // const numActiveTodos = todos.filter((todo) => !todo.completed).length;
-  // const allCompleted = todos.length > 0 && numActiveTodos === 0;
-  // const mark = !allCompleted ? "completed" : "active";
-  const filteredTodos = todosMap[hash] || todos;
+    e.key === 'Enter' &&
+    newTodo.length > 0 &&
+    commitNewTodo(newTodo).then(() => setNewTodo(''));
+  const filteredTodos = todosMap[filter] || todos;
 
   return (
     <section className="todoapp">
@@ -56,7 +67,7 @@ export function Todos() {
           placeholder="What needs to be done?"
           autoFocus
           onKeyPress={onNewTodo_enter}
-          onChange={onNewTodo_change}
+          onChange={e => setNewTodo(e.target.value)}
           value={newTodo}
         />
       </header>
@@ -64,8 +75,8 @@ export function Todos() {
         <input id="toggle-all" className="toggle-all" type="checkbox" />
         <label htmlFor="toggle-all">Mark all as complete</label>
         <ul className="todo-list">
-          {filteredTodos.map((todo) => (
-            <li key={todo.id} className={cn(todo.completed && "completed")}>
+          {filteredTodos.map(todo => (
+            <li key={todo.id} className={cn(todo.completed && 'completed')}>
               <div className="view">
                 <input
                   className="toggle"
@@ -87,33 +98,41 @@ export function Todos() {
         </span>
         <ul className="filters">
           <li>
-            <button
-              className={cn(hash === "all" && "selected")}
-              onClick={() => setHash("all")}
+            <a
+              className={cn(filter === 'all' && 'selected')}
+              onClick={() => setFilter('all')}
             >
               All
-            </button>
+            </a>
           </li>
           <li>
-            <button
-              className={cn(hash === "active" && "selected")}
-              onClick={() => setHash("selected")}
+            <a
+              className={cn(filter === 'active' && 'selected')}
+              onClick={() => setFilter('active')}
             >
               Active
-            </button>
+            </a>
           </li>
           <li>
-            <button
-              className={cn(hash === "completed" && "selected")}
-              onClick={() => setHash("completed")}
+            <a
+              className={cn(filter === 'completed' && 'selected')}
+              onClick={() => setFilter('completed')}
             >
               Completed
-            </button>
+            </a>
           </li>
         </ul>
-        <button className="clear-completed" onClick={clearCompleted}>
-          Clear completed
-        </button>
+        {clearCompletedTodos && (
+          <button
+            className="clear-completed"
+            onClick={() => {
+              clearCompletedTodos();
+              setFilter('all');
+            }}
+          >
+            Clear completed
+          </button>
+        )}
       </footer>
     </section>
   );
