@@ -13,7 +13,7 @@ export type TodosProps = {
   toggleTodo: (id: string) => Promise<void>;
   clearCompletedTodos?: () => void;
   todosTitle?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 // https://www.w3resource.com/javascript-exercises/javascript-math-exercise-23.php

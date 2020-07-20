@@ -43,8 +43,13 @@ const App = () => {
 ReactDOM.render(<App />, document.getElementById('root'));
 ```
 
-If you want something that persists in localstorage, you can use `useTodosLocalStorageState` instead. It has the same API as `useTodosLocalState`
+If you want something that persists in localstorage, you can use `useTodosLocalStorageState` instead. It has the same API as `useTodosLocalState`.
 
+## List of Implementations
+
+- AWS Amplify + AppSync: *tbd*
+- Firebase: *tbd*
+- Netlify + FaunaDB: *tbd*
 
 ## Acknowledgements
 
