@@ -6,23 +6,31 @@ export type TodoType = {
   completed?: boolean;
   id: string;
 };
+export type PartialTodoType = {
+  value?: string;
+  completed?: boolean;
+  id: string;
+};
 
 export type TodosProps = {
   todos: TodoType[];
-  commitNewTodo: (value: string) => Promise<void>;
-  toggleTodo: (id: string) => Promise<void>;
+  addNewTodo: (value: string) => Promise<void>;
+  updateTodo: (modifiedTodo: PartialTodoType) => Promise<void>;
+  deleteTodo?: (id: string) => Promise<void>;
   clearCompletedTodos?: () => void;
   todosTitle?: string;
   children?: React.ReactNode;
 };
 
 // https://www.w3resource.com/javascript-exercises/javascript-math-exercise-23.php
-function uuid(){
+function uuid() {
   var dt = new Date().getTime();
-  var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = (dt + Math.random()*16)%16 | 0;
-      dt = Math.floor(dt/16);
-      return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+  var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(
+    c
+  ) {
+    var r = (dt + Math.random() * 16) % 16 | 0;
+    dt = Math.floor(dt / 16);
+    return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
   });
   return uuid;
 }
@@ -49,13 +57,15 @@ export function useTodosLocalState() {
   // external API + implementation
   return {
     todos,
-    async commitNewTodo(value: string) {
+    async addNewTodo(value: string) {
       setTodos([...todos, { value, id: uuid(), completed: false }]);
     },
-    async toggleTodo(id: string) {
+    async updateTodo(modifiedTodo: PartialTodoType) {
       setTodos(
         todos.map(todo =>
-          todo.id !== id ? todo : { ...todo, completed: !todo.completed }
+          todo.id !== modifiedTodo.id
+            ? todo
+            : { ...todo, completed: !todo.completed }
         )
       );
     },
@@ -78,15 +88,20 @@ export function useTodosLocalStorageState() {
   // external API + implementation
   return {
     todos,
-    async commitNewTodo(value: string) {
+    async addNewTodo(value: string) {
       setTodos([...todos, { value, id: uuid(), completed: false }]);
     },
-    async toggleTodo(id: string) {
+    async updateTodo(modifiedTodo: PartialTodoType) {
       setTodos(
         todos.map(todo =>
-          todo.id !== id ? todo : { ...todo, completed: !todo.completed }
+          todo.id !== modifiedTodo.id
+            ? todo
+            : { ...todo, completed: !todo.completed }
         )
       );
+    },
+    async deleteTodo(id: string) {
+      setTodos(todos.filter(todo => todo.id !== id));
     },
     clearCompletedTodos: () => {
       window.confirm('Sure you want to clear completed todos?') &&
@@ -97,9 +112,10 @@ export function useTodosLocalStorageState() {
 
 export function Todos({
   todos,
-  commitNewTodo,
-  toggleTodo,
+  addNewTodo,
+  updateTodo,
   clearCompletedTodos,
+  deleteTodo,
   todosTitle = 'React-TodoMVC',
   children,
 }: TodosProps) {
@@ -114,7 +130,7 @@ export function Todos({
   const onNewTodo_enter = (e: React.KeyboardEvent<HTMLInputElement>) =>
     e.key === 'Enter' &&
     newTodo.length > 0 &&
-    commitNewTodo(newTodo).then(() => setNewTodo(''));
+    addNewTodo(newTodo).then(() => setNewTodo(''));
   const filteredTodos = todosMap[filter] || todos;
 
   return (
@@ -142,10 +158,17 @@ export function Todos({
                   className="toggle"
                   type="checkbox"
                   checked={todo.completed}
-                  onChange={() => toggleTodo(todo.id)}
+                  onChange={() =>
+                    updateTodo({ ...todo, completed: !todo.completed })
+                  }
                 />
                 <label>{todo.value}</label>
-                <button className="destroy"></button>
+                {deleteTodo && (
+                  <button
+                    className="destroy"
+                    onClick={() => deleteTodo(todo.id)}
+                  ></button>
+                )}
               </div>
               <input className="edit" defaultValue={todo.value} />
             </li>
@@ -154,7 +177,10 @@ export function Todos({
       </section>
       <footer className="footer">
         <span className="todo-count">
-          <strong>{todosMap.active.length}</strong> item left
+          <strong>
+            {todosMap.active.length}/{todos.length}
+          </strong>{' '}
+          item{todosMap.active.length > 1 && 's'} left
         </span>
         <ul className="filters">
           <li>

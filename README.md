@@ -18,9 +18,10 @@ npm i react-todomvc
 The core of this package is a `<Todos>` component that takes 5 props:
 
 - `todos:  TodoType[]`: an array of `TodoType` objects 
-- `commitNewTodo: (value: string) => Promise<void>`: callback for adding a new todo
-- `toggleTodo: (id: string) => Promise<void>`: callback for toggling the completion state of a todo of `id`
-- `clearCompletedTodos?: () => void`: callback for clearing completed todos (optional - if omitted, the corresponding button won't show)
+- `addNewTodo: (value: string) => Promise<void>`: callback for adding a new todo
+- `updateTodo: (modifiedTodo: PartialTodoType) => Promise<void>`: update the value or completion state of a Todo by its `id`
+- `deleteTodo?: (id: string) => Promise<void>`: optional callback for deleting a todo by ID
+- `clearCompletedTodos?: () => void`: optional callback for clearing completed todos (if omitted, the corresponding button won't show)
 - `todosTitle?: string`: optional string - to customize the title shown. defaults to `"React-TodoMVC"`.
 
 
@@ -32,7 +33,16 @@ import { Todos, useTodosLocalState } from 'react-todomvc';
 import 'react-todomvc/dist/todomvc.css'; // for styling
 
 const App = () => {
-  const props = useTodosLocalState() // FOR DEMO CREATOR: replace this with your impl!
+  // FOR DEMO CREATOR: replace this with your impl!
+  const props = useTodosLocalState() 
+  // // must implement
+  // todos: TodoType[]
+  // function addNewTodo(value: string): Promise<void>`
+  // function updateTodo(modifiedTodo: PartialTodoType): Promise<void>`
+  // // optional
+  // function deleteTodo(id: string): Promise<void>
+  // function clearCompletedTodos(): void
+  // todosTitle?: string
   return (
     <div>
       <Todos {...props} />
