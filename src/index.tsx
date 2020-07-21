@@ -6,16 +6,11 @@ export type TodoType = {
   completed?: boolean;
   id: string;
 };
-export type PartialTodoType = {
-  value?: string;
-  completed?: boolean;
-  id: string;
-};
 
 export type TodosProps = {
   todos: TodoType[];
   addNewTodo: (value: string) => Promise<void>;
-  updateTodo: (modifiedTodo: PartialTodoType) => Promise<void>;
+  updateTodo: (modifiedTodo: TodoType) => Promise<void>;
   deleteTodo?: (id: string) => Promise<void>;
   clearCompletedTodos?: () => void;
   todosTitle?: string;
@@ -60,7 +55,7 @@ export function useTodosLocalState() {
     async addNewTodo(value: string) {
       setTodos([...todos, { value, id: uuid(), completed: false }]);
     },
-    async updateTodo(modifiedTodo: PartialTodoType) {
+    async updateTodo(modifiedTodo: TodoType) {
       setTodos(
         todos.map(todo =>
           todo.id !== modifiedTodo.id
@@ -91,7 +86,7 @@ export function useTodosLocalStorageState() {
     async addNewTodo(value: string) {
       setTodos([...todos, { value, id: uuid(), completed: false }]);
     },
-    async updateTodo(modifiedTodo: PartialTodoType) {
+    async updateTodo(modifiedTodo: TodoType) {
       setTodos(
         todos.map(todo =>
           todo.id !== modifiedTodo.id
