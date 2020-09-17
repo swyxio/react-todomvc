@@ -57,6 +57,7 @@ If you want something that persists in localstorage, you can use `useTodosLocalS
 
 ## List of Implementations
 
+- [Slash GraphQL](https://dgraph.io/slash-graphql): example [repo](https://github.com/dgraph-io/tudo-tutorial) & [blog](https://dgraph.io/blog/post/todo-slash-graphql/)
 - AWS Amplify + AppSync: *tbd*
 - Firebase: *tbd*
 - Netlify + FaunaDB: *tbd*
